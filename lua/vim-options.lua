@@ -18,6 +18,11 @@ vim.cmd("set hidden")
 --clipboard
 vim.cmd("set clipboard=unnamedplus")
 
+vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
+
 vim.g.mapleader = ","
 
 -- Open NeoTree on Startup
