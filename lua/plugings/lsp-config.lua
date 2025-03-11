@@ -8,16 +8,25 @@ return {
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
+
+    config = function()
+      require("mason").setup()
+    end,
+
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"lua_ls",
-					"ts_ls",
-					"pyright", -- Para Python (Django)
-					"intelephense", -- Para PHP (Laravel)
-					"volar", -- Para Vue.js
-					"cssls", -- Para CSS
-					"html", -- Para HTML },
+					--		"ts_ls",
+					--		"pyright", -- Para Python (Django)
+					--		"intelephense", -- Para PHP (Laravel)
+					--		"volar", -- Para Vue.js
+					--		"cssls", -- Para CSS
+					--		"html", -- Para HTML
+					--	"tailwindcss",
+					--	"clangd",
+					"csharp_ls",
+					"omnisharp"
 				},
 			})
 		end,
@@ -29,27 +38,14 @@ return {
 			local capabilities = cmp_nvim_lsp.default_capabilities()
 			local lspconfig = require("lspconfig")
 
-			lspconfig.lua_ls.setup({
+			lspconfig.csharp_ls.setup({
 				capabilities = capabilities,
 			})
-			lspconfig.ts_ls.setup({
+			lspconfig.omnisharp.setup({
+        cmd = { "dotnet", vim.fn.expand("~/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll") },
 				capabilities = capabilities,
 			})
-			lspconfig.pyright.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.intelephense.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.volar.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.cssls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-			})
+
 
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})

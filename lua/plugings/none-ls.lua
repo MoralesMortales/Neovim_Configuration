@@ -14,6 +14,7 @@ return {
         null_ls.builtins.formatting.prettier, --Js
         null_ls.builtins.formatting.black, --Python
         null_ls.builtins.formatting.isort, --Python
+        null_ls.builtins.formatting.csharpier, --C#
         require("none-ls.diagnostics.eslint_d")
        -- null_ls.builtins.diagnostics.eslint_d, --Js
       },
