@@ -39,7 +39,6 @@
         capabilities = capabilities,
       }
 
-      -- Configuraciones específicas
       lspconfig.lua_ls.setup(common_setup)
       lspconfig.ts_ls.setup(common_setup)  -- Cambiado de ts_ls
       lspconfig.pyright.setup(common_setup)
