@@ -1,4 +1,4 @@
- return {
+return {
   {
     "williamboman/mason.nvim",
     lazy = false,
@@ -22,6 +22,7 @@
           "clangd",
           "csharp_ls",
           "omnisharp",
+          "arduino_language_server",
         },
         automatic_installation = true, -- Opcional: instala automáticamente los LSP faltantes
       })
@@ -40,15 +41,38 @@
       }
 
       lspconfig.lua_ls.setup(common_setup)
-      lspconfig.ts_ls.setup(common_setup)  -- Cambiado de ts_ls
+      lspconfig.ts_ls.setup(common_setup) -- Cambiado de ts_ls
       lspconfig.pyright.setup(common_setup)
-      lspconfig.intelephense.setup(common_setup)
+      lspconfig.intelephense.setup({
+        capabilities = capabilities,
+        cmd = { "intelephense", "--stdio" }, -- Asegúrate de que esto funcione
+        -- Opcional: Configuración para detectar el directorio raíz (útil para proyectos PHP)
+        root_dir = function(fname)
+          return lspconfig.util.root_pattern("composer.json", ".git")(fname)
+              or lspconfig.util.path.dirname(fname)
+        end,
+      })
       lspconfig.volar.setup(common_setup)
       lspconfig.cssls.setup(common_setup)
       lspconfig.html.setup(common_setup)
       lspconfig.tailwindcss.setup(common_setup)
       lspconfig.clangd.setup(common_setup)
       lspconfig.csharp_ls.setup(common_setup)
+
+      lspconfig.arduino_language_server.setup({ -- ¡Nota: El nombre puede variar!
+        capabilities = capabilities,
+  cmd = {
+    vim.fn.stdpath("data") .. "/mason/bin/arduino-language-server", -- Mason-installed server
+    "-cli", "/home/lup/.config/nvim/bin/arduino-cli", -- Full path to arduino-cli
+    "-cli-config", "~/.arduino15/arduino-cli.yaml",
+    "-fqbn", "arduino:avr:uno", -- Board type (Uno)
+  },
+        -- Opcional: Configuración para detectar proyectos Arduino
+        root_dir = function(fname)
+          return lspconfig.util.root_pattern("*.ino", "platformio.ini")(fname)
+        end,
+      })
+
       -- Configuración especial para Omnisharp
       lspconfig.omnisharp.setup({
         cmd = { "dotnet", vim.fn.expand("~/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll") },
